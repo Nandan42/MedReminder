@@ -14,10 +14,6 @@ const medicineSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  reminder : {
-    type: Boolean,
-    required: true,
-  },
   timing: {
         type : String
   },

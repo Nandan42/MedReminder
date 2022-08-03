@@ -3,7 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import logger from 'morgan';
-import userRoutes from './server/routes/user'
+// import userRoutes from './server/routes/user'
 import medicineRoutes from './server/routes/medicine';
 
 // set up dependencies
@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/', medicineRoutes);
-app.use('/api/',userRoutes);
+// app.use('/api/',userRoutes);
 
 app.listen(port, () => {
   console.log(`Our server is running on port ${port}`);

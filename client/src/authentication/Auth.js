@@ -1,6 +1,6 @@
 
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 import Userfront from "@userfront/react";
 import AppBar from '@mui/material/AppBar';
 // import Box from '@mui/material/Box';
@@ -8,7 +8,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-
+import Dashboard from '../Dashboard'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 Userfront.init("5nx89xyn");
 
@@ -22,27 +23,16 @@ const PasswordResetForm = Userfront.build({
   toolId: "kaonab"
 });
 
+const LogoutButton = Userfront.build({
+  toolId: "lamkam"
+});
+
+
 
 export default function App() {
   return (
     <Router>
       <div>
-        {/* <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/reset">Reset</Link>
-            </li>
-            <li>
-              <Link to="/dashboard">Dashboard</Link>
-            </li>
-          </ul>
-        </nav> */}
         <AppBar position="static" sx={{ mb:4 }}>
         <Toolbar>
           <IconButton
@@ -57,16 +47,20 @@ export default function App() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             MedReminder
           </Typography>
-          <Button color="inherit" component={Link} to="/">Register</Button>
-          <Button color="inherit" component={Link} to="/login">Login</Button>
+          {!Userfront.tokens.accessToken && <Button color="inherit" component={Link} to="/">Register</Button>}
+          {!Userfront.tokens.accessToken&&<Button color="inherit" component={Link} to="/login">Login</Button>}
+          {Userfront.tokens.accessToken&&<LogoutButton />}        
         </Toolbar>
       </AppBar>
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/reset" element={<PasswordReset />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="login" element={<Login />} />
+            <Route path="reset" element={<PasswordReset />} />
+          <Route/>
+        </Routes>
+        <Routes>
+        <Route path="/dashboard" element={<RequireAuth><Dashboard user={Userfront.user}/></RequireAuth>} />
         </Routes>
       </div>
     </Router>
@@ -100,13 +94,17 @@ function PasswordReset() {
   );
 }
 
-function Dashboard() {
-  const userData = JSON.stringify(Userfront.user, null, 2);
-  return (
-    <div>
-      <h2>Dashboard</h2>
-      <pre>{userData}</pre>
-      <button onClick={Userfront.logout}>Logout</button>
-    </div>
-  );
+// function Dashboard() {
+//   const userData = JSON.stringify(Userfront.user, null, 2);
+
+// }
+
+function RequireAuth({ children }) {
+  let location = useLocation();
+  if (!Userfront.tokens.accessToken) {
+    // Redirect to the /login page
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
 }

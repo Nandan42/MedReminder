@@ -7,7 +7,6 @@ export async function createMedicine(req, res) {
     _id: mongoose.Types.ObjectId(),
     name: req.body.name,
     dosage: req.body.dosage,
-    reminder: req.body.reminder,
     timing: req.body.timing
   });
   return medicine
@@ -30,7 +29,7 @@ export async function createMedicine(req, res) {
 
 export async function getAllMedicine(req, res){
     Medicine.find()
-      .select('_id name dosage reminder timing')
+      .select('_id name dosage timing')
       .then((allMedicine) => {
         return res.status(200).json({
           success: true,
@@ -47,45 +46,45 @@ export async function getAllMedicine(req, res){
       });
   }
 
-export function getSingleMedicine(req, res) {
-    const id = req.params.medicineId;
-    Medicine.findById(id)
-      .then((singleMedicine) => {
-        res.status(200).json({
-          success: true,
-          message: `More on ${singleMedicine.name}`,
-          Medicine: singleMedicine,
-        });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          success: false,
-          message: 'This cause does not exist',
-          error: err.message,
-        });
-     });
-  }
+// export function getSingleMedicine(req, res) {
+//     const id = req.params.medicineId;
+//     Medicine.findById(id)
+//       .then((singleMedicine) => {
+//         res.status(200).json({
+//           success: true,
+//           message: `More on ${singleMedicine.name}`,
+//           Medicine: singleMedicine,
+//         });
+//       })
+//       .catch((err) => {
+//         res.status(500).json({
+//           success: false,
+//           message: 'This cause does not exist',
+//           error: err.message,
+//         });
+//      });
+//   }
 
-export async function updateMedicine(req, res) {
-    const id = req.params.medicineId;
-    const updateObject = req.body;
-    Medicine.findById(id)
-    .update({ _id:id }, { $set:updateObject })
-      .exec()
-      .then((updateObject) => {
-        res.status(200).json({
-          success: true,
-          message: 'Medicine is updated',
-          updateMedicine: updateObject,
-        });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          success: false,
-          message: err.message
-        });
-      });
-  }
+// export async function updateMedicine(req, res) {
+//     const id = req.params.medicineId;
+//     const updateObject = req.body;
+//     Medicine.findById(id)
+//     .update({ _id:id }, { $set:updateObject })
+//       .exec()
+//       .then((updateObject) => {
+//         res.status(200).json({
+//           success: true,
+//           message: 'Medicine is updated',
+//           updateMedicine: updateObject,
+//         });
+//       })
+//       .catch((err) => {
+//         res.status(500).json({
+//           success: false,
+//           message: err.message
+//         });
+//       });
+//   }
 
 export function deleteMedicine(req, res) {
     const id = req.params.medicineId;

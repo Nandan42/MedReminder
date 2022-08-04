@@ -2,10 +2,10 @@ import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 
 const medicineSchema = new mongoose.Schema({
-  /*  user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
-      }, */
+  userUUID:{
+    type: String,
+    required: true,
+      }, 
   name: {
     type: String,
     required: true,
@@ -15,8 +15,13 @@ const medicineSchema = new mongoose.Schema({
     required: true,
   },
   timing: {
-        type : String
+      type : String,
+      required: true,
   },
+  key: {
+    type : String,
+    required: true,
+},
 });
 
 export default mongoose.model('Medicine', medicineSchema);

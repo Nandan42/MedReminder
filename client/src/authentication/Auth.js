@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Dashboard from '../Dashboard'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 Userfront.init("5nx89xyn");
 
@@ -45,7 +45,7 @@ export default function App() {
             {/* <MenuIcon /> */}
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            MedReminder
+            MedReminder 
           </Typography>
           {!Userfront.tokens.accessToken && <Button color="inherit" component={Link} to="/">Register</Button>}
           {!Userfront.tokens.accessToken&&<Button color="inherit" component={Link} to="/login">Login</Button>}
@@ -57,10 +57,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="reset" element={<PasswordReset />} />
+            <Route path="/dashboard" element={<RequireAuth><Dashboard user={Userfront.user}/></RequireAuth>} />
           <Route/>
-        </Routes>
-        <Routes>
-        <Route path="/dashboard" element={<RequireAuth><Dashboard user={Userfront.user}/></RequireAuth>} />
         </Routes>
       </div>
     </Router>
@@ -69,19 +67,13 @@ export default function App() {
 
 function Home() {
   return (
-    <div>
-      {/* <h2>Home</h2> */}
       <SignupForm />
-    </div>
   );
 }
 
 function Login() {
   return (
-    <div>
-      {/* <h2>Login</h2> */}
       <LoginForm />
-    </div>
   );
 }
 

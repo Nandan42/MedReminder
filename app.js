@@ -11,6 +11,13 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger('dev'));
+const cors = require('cors');
+const corsOptions ={
+    origin:'http://localhost:3000', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
 // set up mongoose
 mongoose.connect('mongodb://localhost/projectsupport')
   .then(()=> {
@@ -28,7 +35,7 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/api/', medicineRoutes);
+app.use(medicineRoutes);
 // app.use('/api/',userRoutes);
 
 app.listen(port, () => {

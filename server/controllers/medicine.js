@@ -4,10 +4,11 @@ import Medicine from '../models/medicine';
 // create new medicine
 export async function createMedicine(req, res) {
   const medicine = new Medicine({
-    _id: mongoose.Types.ObjectId(),
+    userUUID: req.body.userUUID,
     name: req.body.name,
     dosage: req.body.dosage,
-    timing: req.body.timing
+    timing: req.body.timing,
+    key: req.body.key
   });
   return medicine
     .save()
@@ -22,20 +23,16 @@ export async function createMedicine(req, res) {
       res.status(500).json({
         success: false,
         message: 'Server error. Please try again.',
-        error: error.message,
+        error: error.response,
       });
     });
 } 
 
 export async function getAllMedicine(req, res){
-    Medicine.find()
-      .select('_id name dosage timing')
+    Medicine.find({userUUID: req.params.userUUID})
+      .select('name dosage timing key')
       .then((allMedicine) => {
-        return res.status(200).json({
-          success: true,
-          message: 'A list of all medicines',
-          Medicine: allMedicine,
-        });
+        return res.status(200).json(allMedicine);
       })
       .catch((err) => {
         res.status(500).json({
@@ -87,8 +84,8 @@ export async function getAllMedicine(req, res){
 //   }
 
 export function deleteMedicine(req, res) {
-    const id = req.params.medicineId;
-    Medicine.findByIdAndRemove(id)
+    // const key = req.params.medicineId;
+    Medicine.findOneAndDelete({key: req.params.medicineId})
       .exec()
       .then(()=> res.status(204).json({
         success: true,

@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
  
 class ReminderItems extends Component {
     constructor(props) {
@@ -12,7 +14,7 @@ class ReminderItems extends Component {
       }
 
   createReminders(reminders) {
-    return <li key={reminders.key} onClick={() => this.props.remove(reminders.key)} > {reminders.drug} {reminders.dosage} {reminders.timing} </li>
+    return <li key={reminders.key}> {reminders.name} || {reminders.dosage} || {reminders.timing} <IconButton onClick={() => this.props.remove(reminders.key)}><DeleteIcon/></IconButton></li>
   }  
 
 
